@@ -40,7 +40,8 @@ window.GUN_BUILDS = {
       button: "Get coins on Midasbuy"
     },
     socials: [
-      { label: "Twitch", url: "https://www.twitch.tv/goddess" }
+      { label: "Twitch", url: "https://www.twitch.tv/goddess" },
+      { label: "TikTok", url: "https://www.tiktok.com/@goddessdf" }
     ]
   },
 
