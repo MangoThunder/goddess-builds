@@ -30,7 +30,7 @@ window.GUN_BUILDS = {
     liveTitle: "",                    // optional; blank = use the current Twitch stream title
     schedule: "",                     // optional, e.g. "Mon–Fri · 7pm ET"
     tagline: "Every Operations loadout I run on stream. Copy the code, import it in the Gunsmith, deploy.",
-    showSampleNotice: true,           // set to false once the real builds are in
+    showSampleNotice: false,          // true shows a "sample builds" banner
     promo: {
       url: "https://www.midasbuy.com/goddess/dfm",
       eyebrow: "Midasbuy top-up",
@@ -45,22 +45,10 @@ window.GUN_BUILDS = {
     ]
   },
 
-  // SAMPLE BUILDS: placeholders so the layout can be seen. Replace with Goddess's real codes.
   builds: [
-    { id: "k416", weapon: "K416", category: "Assault Rifle", featured: true,
-      code: "K416 Assault Rifle-Operations (Extraction Mode)-SAMPLE-REPLACE-ME",
-      note: "Sample note. Replace with what Goddess says about this build." },
-    { id: "m4a1", weapon: "M4A1", category: "Assault Rifle",
-      code: "M4A1 Assault Rifle-Operations (Extraction Mode)-SAMPLE-REPLACE-ME" },
-    { id: "ak-12", weapon: "AK-12", category: "Assault Rifle",
-      code: "AK-12 Assault Rifle-Operations (Extraction Mode)-SAMPLE-REPLACE-ME" },
-    { id: "vector", weapon: "Vector", category: "SMG",
-      code: "Vector Submachine Gun-Operations (Extraction Mode)-SAMPLE-REPLACE-ME" },
-    { id: "mp7", weapon: "MP7", category: "SMG",
-      code: "MP7 Submachine Gun-Operations (Extraction Mode)-SAMPLE-REPLACE-ME" },
-    { id: "sr-25", weapon: "SR-25", category: "Marksman Rifle",
-      code: "SR-25 Marksman Rifle-Operations (Extraction Mode)-SAMPLE-REPLACE-ME" },
-    { id: "awm", weapon: "AWM", category: "Sniper Rifle",
-      code: "AWM Sniper Rifle-Operations (Extraction Mode)-SAMPLE-REPLACE-ME" }
+    { id: "k437", weapon: "K437", category: "Assault Rifle", featured: true,
+      image: "images/guns/k437.webp",
+      calibration: "images/guns/k437-calibration.webp",
+      code: "K437 Assault Rifle-Operations (Extraction Mode)-6LP9HB40CMO768CQQSIJQ" }
   ]
 };
