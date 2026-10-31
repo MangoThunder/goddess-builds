@@ -53,6 +53,10 @@ window.GUN_BUILDS = {
     { id: "k437-red-dot", weapon: "K437 Red Dot", category: "Assault Rifle",
       image: "images/guns/k437-red-dot.webp",
       calibration: "images/guns/k437-red-dot-calibration.webp",
-      code: "K437 Assault Rifle-Operations (Extraction Mode)-6LI9ISC0CMO768CQQSIJQ" }
+      code: "K437 Assault Rifle-Operations (Extraction Mode)-6LI9ISC0CMO768CQQSIJQ" },
+    { id: "ar-57", weapon: "AR-57", category: "Assault Rifle",
+      image: "images/guns/ar-57.webp",
+      calibration: "images/guns/ar-57-calibration.webp",
+      code: "AR-57 Assault Rifle-Operations (Extraction Mode)-6LBBJF00CMO768CQQSIJQ" }
   ]
 };
