@@ -54,7 +54,29 @@
     return isNaN(d) ? "" : d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
   };
   const searchWords = () => state.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
-  const extLink = (href, inner, cls) => `<a${cls ? ` class="${cls}"` : ""} href="${esc(href)}" target="_blank" rel="noopener">${inner}</a>`;
+  // Only web links and the site's own files are allowed, so a mistyped or pasted
+  // "javascript:" or "data:" link in builds.js can never run code on the page.
+  const blocked = new Set();
+  function safeUrl(url) {
+    const u = String(url || "").trim();
+    if (!u) return "";
+    try {
+      const parsed = new URL(u, location.href);
+      if (parsed.protocol === "https:" || parsed.protocol === "http:") return u;
+    } catch (e) {}
+    if (!/^[a-z][a-z0-9+.-]*:/i.test(u) && !u.startsWith("//")) return u;
+    if (!blocked.has(u)) console.warn("Blocked unsafe link in builds.js:", u);
+    blocked.add(u);
+    return "";
+  }
+  const extLink = (href, inner, cls) => {
+    const url = safeUrl(href);
+    return url ? `<a${cls ? ` class="${cls}"` : ""} href="${esc(url)}" target="_blank" rel="noopener noreferrer">${inner}</a>` : "";
+  };
+  const img = (src, attrs) => {
+    const url = safeUrl(src);
+    return url ? `<img src="${esc(url)}" ${attrs}>` : "";
+  };
 
   // Escapes text, then wraps each search word it contains in <mark>.
   function highlight(text) {
@@ -64,7 +86,7 @@
   }
 
   const avatarHTML = (cls) =>
-    cfg.avatar ? `<img class="${cls}" src="${esc(cfg.avatar)}" alt="">` : `<span class="${cls}" aria-hidden="true">${esc(initials(cfg.name))}</span>`;
+    safeUrl(cfg.avatar) ? img(cfg.avatar, `class="${cls}" alt=""`) : `<span class="${cls}" aria-hidden="true">${esc(initials(cfg.name))}</span>`;
 
   const icon = {
     search: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
@@ -86,7 +108,7 @@
 
   // ── templates ──────────────────────────────────────────────
   function promoHTML(p) {
-    return `<a class="promo" href="${esc(p.url)}" target="_blank" rel="noopener sponsored">
+    return `<a class="promo" href="${esc(safeUrl(p.url))}" target="_blank" rel="noopener noreferrer sponsored">
       <span class="eyebrow">${esc(p.eyebrow || "Top-up deal")}</span>
       <span class="promo-body">
         <span class="promo-copy">
@@ -124,7 +146,7 @@
 
   function cardHTML(b) {
     const id = esc(b.id);
-    const pics = Object.keys(PICTURES).filter((k) => b[k]);
+    const pics = Object.keys(PICTURES).filter((k) => safeUrl(b[k]));
     return `<article class="card">
       <div class="card-head">
         <div>
@@ -133,8 +155,8 @@
         </div>
         ${starBtn(b, "star")}
       </div>
-      ${b.image
-        ? `<button type="button" class="shot" data-open="${id}" data-pic="image" aria-label="View ${esc(b.weapon)} build"><img src="${esc(b.image)}" alt="" loading="lazy"></button>`
+      ${safeUrl(b.image)
+        ? `<button type="button" class="shot" data-open="${id}" data-pic="image" aria-label="View ${esc(b.weapon)} build">${img(b.image, 'alt="" loading="lazy"')}</button>`
         : `<div class="shot shot-empty">Screenshot coming soon</div>`}
       ${codeRow(b)}
       <div class="card-foot">
@@ -172,7 +194,7 @@
   }
 
   function modalHTML(b) {
-    const pics = Object.keys(PICTURES).filter((k) => b[k]);
+    const pics = Object.keys(PICTURES).filter((k) => safeUrl(b[k]));
     const pic = pics.includes(state.pic) ? state.pic : pics[0];
     const [prev, next] = neighbors(b);
     return `
@@ -191,7 +213,7 @@
       </div>
       <div class="picture">
         ${pic
-          ? `<img src="${esc(b[pic])}" alt="${esc(b.weapon)} ${pic === "image" ? "build" : "calibration"} in the Gunsmith">`
+          ? img(b[pic], `alt="${esc(b.weapon)} ${pic === "image" ? "build" : "calibration"} in the Gunsmith"`)
           : `<p class="picture-empty">No screenshot for this build yet.<br>The code below still imports the full build.</p>`}
       </div>
       ${pic ? extLink(b[pic], "Open full size", "full-link") : ""}
@@ -231,7 +253,7 @@
             <li><button type="button" id="nav-all" aria-pressed="true">All builds<span class="n">${builds.length}</span></button></li>
             <li><button type="button" id="nav-saved" aria-pressed="false">Saved<span class="n" id="saved-count">0</span></button></li>
           </ul>
-          ${cfg.promo && cfg.promo.url ? promoHTML(cfg.promo) : ""}
+          ${cfg.promo && safeUrl(cfg.promo.url) ? promoHTML(cfg.promo) : ""}
           ${cfg.socials.length ? `<ul class="socials">${cfg.socials.map((s) => `<li>${extLink(s.url, `${esc(s.label)}<span aria-hidden="true">→</span>`)}</li>`).join("")}</ul>` : ""}
         </div>
       </aside>
@@ -496,7 +518,8 @@
   async function decapi(what) {
     const res = await fetch(`https://decapi.me/twitch/${what}/${encodeURIComponent(cfg.twitch)}`, { cache: "no-store" });
     if (!res.ok) throw new Error(res.status);
-    return (await res.text()).trim();
+    // Treat the answer as plain text and keep it short; it is escaped wherever it is shown.
+    return (await res.text()).trim().slice(0, 140);
   }
 
   async function checkLive() {
