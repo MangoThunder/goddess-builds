@@ -57,6 +57,10 @@ window.GUN_BUILDS = {
     { id: "ar-57", weapon: "AR-57", category: "Assault Rifle",
       image: "images/guns/ar-57.webp",
       calibration: "images/guns/ar-57-calibration.webp",
-      code: "AR-57 Assault Rifle-Operations (Extraction Mode)-6LBBJF00CMO768CQQSIJQ" }
+      code: "AR-57 Assault Rifle-Operations (Extraction Mode)-6LBBJF00CMO768CQQSIJQ" },
+    { id: "mdr", weapon: "MDR", category: "Assault Rifle",
+      image: "images/guns/mdr.webp",
+      calibration: "images/guns/mdr-calibration.webp",
+      code: "MDR Assault Rifle-Operations (Extraction Mode)-6LPFVFO0CMO768CQQSIJQ" }
   ]
 };
