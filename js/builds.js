@@ -73,6 +73,10 @@ window.GUN_BUILDS = {
     { id: "qjb201", weapon: "QJB201", category: "LMG",
       image: "images/guns/qjb201.webp",
       calibration: "images/guns/qjb201-calibration.webp",
-      code: "QJB201 Light Machine Gun-Operations (Extraction Mode)-6LPFVT80CMO768CQQSIJQ" }
+      code: "QJB201 Light Machine Gun-Operations (Extraction Mode)-6LPFVT80CMO768CQQSIJQ" },
+    { id: "m700", weapon: "M700", category: "Sniper Rifle",
+      image: "images/guns/m700.webp",
+      calibration: "images/guns/m700-calibration.webp",
+      code: "M700 Sniper Rifle-Operations (Extraction Mode)-6LPG02G0CMO768CQQSIJQ" }
   ]
 };
