@@ -26,8 +26,8 @@ window.GUN_BUILDS = {
     game: "Delta Force",
     mode: "Operations",
     twitch: "goddess",                // twitch.tv/<this>
-    live: false,                      // set to true while streaming to show the red "Live now" box
-    liveTitle: "",                    // optional stream title shown when live is true
+    live: "auto",                     // "auto" = red "Live now" box turns on by itself while streaming; true/false forces it
+    liveTitle: "",                    // optional; blank = use the current Twitch stream title
     schedule: "",                     // optional, e.g. "Mon–Fri · 7pm ET"
     tagline: "Every Operations loadout I run on stream. Copy the code, import it in the Gunsmith, deploy.",
     showSampleNotice: true,           // set to false once the real builds are in

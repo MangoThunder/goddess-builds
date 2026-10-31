@@ -91,12 +91,16 @@
     </a>`;
   }
 
+  // live: "auto" asks decapi.me (a free public Twitch status service) every 2 minutes;
+  // true/false force it. If the check fails the box just stays a normal Twitch link.
+  const live = { on: cfg.live === true, title: cfg.liveTitle };
+
   function statusHTML() {
     if (!twitchUrl) return "";
-    if (cfg.live) {
+    if (live.on) {
       return `<a class="status is-live" href="${twitchUrl}" target="_blank" rel="noopener">
         <i class="dot" aria-hidden="true"></i>
-        <span><strong>Live now on Twitch</strong><small>${esc(cfg.liveTitle || "Watch " + cfg.name + " play " + cfg.game)}</small></span>
+        <span><strong>Live now on Twitch</strong><small>${esc(live.title || "Watch " + cfg.name + " play " + cfg.game)}</small></span>
       </a>`;
     }
     return `<a class="status" href="${twitchUrl}" target="_blank" rel="noopener">
@@ -125,7 +129,7 @@
             <p>${esc(cfg.game)} streamer${cfg.schedule ? " · " + esc(cfg.schedule) : ""}</p>
           </div>
         </div>
-        ${statusHTML()}
+        <div id="status">${statusHTML()}</div>
         ${cfg.tagline ? `<p class="tagline">${esc(cfg.tagline)}</p>` : ""}
         <ul class="rail-nav">
           <li><button type="button" id="nav-all" aria-pressed="true">All builds<span class="n">${builds.length}</span></button></li>
@@ -221,7 +225,7 @@
     const q = state.q.trim();
     return `${icon.crosshair}
       <h2>${q ? `No build for “${esc(q)}” yet` : "No builds here yet"}</h2>
-      <p>${cfg.live ? `${esc(cfg.name)} is live right now. Ask in chat and it might get built on stream.` : `Not every gun has a code yet. Ask for it in ${esc(cfg.name)}'s chat next stream.`}</p>
+      <p>${live.on ? `${esc(cfg.name)} is live right now. Ask in chat and it might get built on stream.` : `Not every gun has a code yet. Ask for it in ${esc(cfg.name)}'s chat next stream.`}</p>
       <div class="empty-actions">
         <button type="button" class="btn" data-reset>Clear search</button>
         ${twitchUrl ? `<a class="btn btn-accent" href="${twitchUrl}" target="_blank" rel="noopener">Ask in Twitch chat</a>` : ""}
@@ -481,6 +485,35 @@
     else if (!id) closeModal();
   }
   window.addEventListener("hashchange", syncHash);
+
+  async function checkLive() {
+    const base = "https://decapi.me/twitch/";
+    const name = encodeURIComponent(cfg.twitch);
+    try {
+      const res = await fetch(`${base}uptime/${name}`, { cache: "no-store" });
+      const text = (await res.text()).trim().toLowerCase();
+      // Live answers look like "1 hour, 5 minutes, 2 seconds"; offline is "<name> is offline".
+      const on = res.ok && /\d+\s+(second|minute|hour|day)/.test(text) && !text.includes("offline");
+      let title = cfg.liveTitle;
+      if (on && !title) {
+        try {
+          const t = await fetch(`${base}title/${name}`, { cache: "no-store" });
+          if (t.ok) title = (await t.text()).trim();
+        } catch (e) {}
+      }
+      if (on === live.on && title === live.title) return;
+      Object.assign(live, { on, title });
+    } catch (e) {
+      if (!live.on) return;
+      live.on = false;
+    }
+    $("#status").innerHTML = statusHTML();
+    if (!empty.hidden) empty.innerHTML = emptyHTML();
+  }
+  if (cfg.live === "auto" && cfg.twitch) {
+    checkLive();
+    setInterval(checkLive, 120000);
+  }
 
   render();
   syncHash();
