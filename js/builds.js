@@ -69,6 +69,10 @@ window.GUN_BUILDS = {
     { id: "k416", weapon: "K416", category: "Assault Rifle",
       image: "images/guns/k416.webp",
       calibration: "images/guns/k416-calibration.webp",
-      code: "K416 Assault Rifle-Operations (Extraction Mode)-6LPFVOG0CMO768CQQSIJQ" }
+      code: "K416 Assault Rifle-Operations (Extraction Mode)-6LPFVOG0CMO768CQQSIJQ" },
+    { id: "qjb201", weapon: "QJB201", category: "LMG",
+      image: "images/guns/qjb201.webp",
+      calibration: "images/guns/qjb201-calibration.webp",
+      code: "QJB201 Light Machine Gun-Operations (Extraction Mode)-6LPFVT80CMO768CQQSIJQ" }
   ]
 };
