@@ -61,6 +61,10 @@ window.GUN_BUILDS = {
     { id: "mdr", weapon: "MDR", category: "Assault Rifle",
       image: "images/guns/mdr.webp",
       calibration: "images/guns/mdr-calibration.webp",
-      code: "MDR Assault Rifle-Operations (Extraction Mode)-6LPFVFO0CMO768CQQSIJQ" }
+      code: "MDR Assault Rifle-Operations (Extraction Mode)-6LPFVFO0CMO768CQQSIJQ" },
+    { id: "m7", weapon: "M7", category: "Battle Rifle",
+      image: "images/guns/m7.webp",
+      calibration: "images/guns/m7-calibration.webp",
+      code: "M7 Battle Rifle-Operations (Extraction Mode)-6LPFVIO0CMO768CQQSIJQ" }
   ]
 };
