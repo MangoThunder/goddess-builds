@@ -77,6 +77,10 @@ window.GUN_BUILDS = {
     { id: "m700", weapon: "M700", category: "Sniper Rifle",
       image: "images/guns/m700.webp",
       calibration: "images/guns/m700-calibration.webp",
-      code: "M700 Sniper Rifle-Operations (Extraction Mode)-6LPG02G0CMO768CQQSIJQ" }
+      code: "M700 Sniper Rifle-Operations (Extraction Mode)-6LPG02G0CMO768CQQSIJQ" },
+    { id: "sv-98", weapon: "SV-98", category: "Sniper Rifle",
+      image: "images/guns/sv-98.webp",
+      calibration: "images/guns/sv-98-calibration.webp",
+      code: "SV-98 Sniper Rifle-Operations (Extraction Mode)-6LJUURG0CMO768CQQSIJQ" }
   ]
 };
